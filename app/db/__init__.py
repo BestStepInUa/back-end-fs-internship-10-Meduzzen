@@ -1,7 +1,7 @@
 import json
 import os
 from fastapi.exceptions import HTTPException
-from config import settings
+from app.config import settings
 
 # Шлях до JSON-файлу
 DATA_PATH = settings.data_file

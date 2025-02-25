@@ -4,7 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from fastapi.staticfiles import StaticFiles
 
-from app.routers.__init__ import base_router
+from app.config import settings
+
+from app.routers import base_router
 
 
 # asynccontextmanager
@@ -32,4 +34,4 @@ app.include_router(base_router)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 if __name__ == "__main__":
-    uvicorn.run(app,  reload=True, host="0.0.0.0", port=8000)
+    uvicorn.run("app.main:app",  reload=settings.reload, host=settings.host, port=settings.port)
