@@ -1,24 +1,23 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager # decorator import
 from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 
-from app.routers import base_router
+from app.routers.base_router import base_router
 
-
-# asynccontextmanager
+# Use the asynccontextmanager decorator for lifespan
+@asynccontextmanager
 async def lifespan(app: FastAPI):
-   yield
-   print("Server is down :(")
+    yield
+    print("Server is down :(")
 
-
-# Створення екземпляру додатку
+# Create an instance of APP(FastAPI)
 app = FastAPI(lifespan=lifespan)
 
-# Додаємо CORS
+# Add CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -27,11 +26,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Конектимо роут
+# Connect the router
 app.include_router(base_router)
 
-# Обслуговування статичних файлів
+# For static files to work
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+# Server startup with automatic restart
 if __name__ == "__main__":
     uvicorn.run("app.main:app",  reload=settings.reload, host=settings.host, port=settings.port)
