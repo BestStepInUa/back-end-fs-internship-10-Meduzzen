@@ -4,9 +4,9 @@
 
 2. To activate the Virtual Environment use: source .venv/Scripts/activate
 
-3. To install FastAPI use: uv add "fastapi[all]" (or use: uv pip install "fastapi[all]")
+3. Change to installing dependencies with the command: uv add "fastapi[all]" (or use: uv pip install "fastapi[all]")
 
-4. To install pytest and httpx (needed for execute tests) use: uv add httpx pytest --dev
+4. Change to installing dependencies with the command: uv add httpx pytest --dev
 
 5. To start dev use: python -m app.main
 
