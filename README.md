@@ -12,6 +12,6 @@
 
 6. To start tests use: pytest -v
 
-## 7. If you want to take part in my project like new contibutor, you should install dev libraries, use: uv sync
+7. If you want to take part in my project like new contibutor, you should install dev libraries, use: uv sync
 
-## 8. For production use: uv sync --no-dev
+8. For production use: uv sync --no-dev
