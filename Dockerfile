@@ -16,7 +16,7 @@ COPY . .
 RUN pip install --no-cache-dir uv
 
 # Install dependencies via uv from pyproject.toml
-RUN uv pip install .
+RUN uv sync --no-dev --frozen
 
 # Open the port
 EXPOSE ${PORT}
