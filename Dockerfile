@@ -1,0 +1,25 @@
+# Use the official Python image
+FROM python:3.12-slim
+
+# Set environment variables by default
+ENV PORT=8000 \
+    HOST=0.0.0.0 \
+    RELOAD=True
+
+# Set up the working directory
+WORKDIR /app
+
+# Copy the project files
+COPY . .
+
+# Install uv
+RUN pip install --no-cache-dir uv
+
+# Install dependencies via uv from pyproject.toml
+RUN uv pip install .
+
+# Open the port
+EXPOSE ${PORT}
+
+# Command to run an application with parameters from environment variables
+CMD ["uvicorn", "app.main:app", "--host", "${HOST}", "--port", "${PORT}", "--reload=${RELOAD}"]
