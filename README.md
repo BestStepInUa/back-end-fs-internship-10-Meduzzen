@@ -11,3 +11,11 @@
 5. To start dev use: python -m app.main
 
 6. To start tests use: pytest -v
+
+To launch the application within Docker:
+
+1. Create (update) the uv.lock file, which contains the exact versions of all dependencies: uv lock
+
+2. Assemble the image: docker build -t fastapi-app .
+
+3. Run the container: docker run -d -p 8000:8000 --name my_fastapi fastapi-app
