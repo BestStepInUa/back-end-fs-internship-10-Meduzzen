@@ -28,26 +28,26 @@ wheels = [
 name = "back-end-fs-internship-10-meduzzen"
 version = "0.1.0"
 source = { virtual = "." }
-
-[package.dev-dependencies]
 dependencies = [
     { name = "fastapi", extra = ["all"] },
     { name = "pydantic-settings" },
     { name = "uvicorn" },
 ]
+
+[package.dev-dependencies]
 dev = [
     { name = "httpx" },
     { name = "pytest" },
 ]
 
 [package.metadata]
-
-[package.metadata.requires-dev]
-dependencies = [
+requires-dist = [
     { name = "fastapi", extras = ["all"], specifier = ">=0.115.8" },
     { name = "pydantic-settings", specifier = ">=2.8.0" },
     { name = "uvicorn", specifier = ">=0.34.0" },
 ]
+
+[package.metadata.requires-dev]
 dev = [
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "pytest", specifier = ">=8.3.4" },

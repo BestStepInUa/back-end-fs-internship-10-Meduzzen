@@ -9,17 +9,20 @@ ENV PORT=8000 \
 # Set up the working directory
 WORKDIR /app
 
-# Copy the project files
-COPY . .
-
 # Install uv
 RUN pip install --no-cache-dir uv
 
+# Copy the configuration files
+COPY pyproject.toml uv.lock ./
+
 # Install dependencies via uv from pyproject.toml
 RUN uv sync --no-dev --frozen
+
+# Copy the project files
+COPY . .
 
 # Open the port
 EXPOSE ${PORT}
 
 # Command to run an application with parameters from environment variables
-CMD ["uvicorn", "app.main:app", "--host", "${HOST}", "--port", "${PORT}", "--reload=${RELOAD}"]
+CMD [".venv/bin/python", "-m", "app.main"]
