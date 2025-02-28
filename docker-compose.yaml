@@ -21,8 +21,7 @@ services:
       retries: 3
     volumes:
       - .:/app
-      - /app/.venv
-    restart: unless-stopped
+      - app_venv:/app/.venv
 
   db:
     container_name: my_app_postgres
@@ -40,7 +39,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    restart: unless-stopped
 
   redis:
     container_name: my_app_redis
@@ -54,8 +52,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
-    restart: unless-stopped
 
 volumes:
   postgres_data:
   redis_data:
+  app_venv:
