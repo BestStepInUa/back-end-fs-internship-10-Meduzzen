@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   app:
     container_name: my_app_fastapi
@@ -22,6 +20,7 @@ services:
     volumes:
       - .:/app
       - app_venv:/app/.venv
+    restart: unless-stopped
 
   db:
     container_name: my_app_postgres
@@ -39,6 +38,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   redis:
     container_name: my_app_redis
@@ -52,6 +52,7 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    restart: unless-stopped
 
 volumes:
   postgres_data:
