@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+import redis.asyncio as redis
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager # decorator import
 from fastapi.staticfiles import StaticFiles
@@ -7,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from app.config import settings
 
 from app.routers.base_router import base_router
+from app.routers.db_redis_test_router import db_redis_test_router
 
 # Use the asynccontextmanager decorator for lifespan
 @asynccontextmanager
@@ -26,8 +28,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Connect the router
+# Connect routers
 app.include_router(base_router)
+app.include_router(db_redis_test_router)
 
 # For static files to work
 app.mount("/static", StaticFiles(directory="static"), name="static")

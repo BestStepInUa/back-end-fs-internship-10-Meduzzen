@@ -1,11 +1,9 @@
 import redis.asyncio as redis
-from contextlib import asynccontextmanager
 
-REDIS_URL = "redis://redis:6379/0"
+from app.config import settings
 
-@asynccontextmanager
 async def get_redis():
-    connection = redis.from_url(REDIS_URL)
+    connection = redis.from_url(settings.redis_url)
     try:
         yield connection
     finally:
