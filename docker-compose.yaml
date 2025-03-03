@@ -20,6 +20,8 @@ services:
     volumes:
       - .:/app
       - app_venv:/app/.venv
+    networks:
+      - backend-network
     restart: unless-stopped
 
   db:
@@ -38,6 +40,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - backend-network
     restart: unless-stopped
 
   redis:
@@ -52,9 +56,15 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      - backend-network
     restart: unless-stopped
 
 volumes:
   postgres_data:
   redis_data:
   app_venv:
+
+networks:
+  backend-network:
+    driver: bridge
