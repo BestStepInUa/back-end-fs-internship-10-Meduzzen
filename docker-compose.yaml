@@ -1,7 +1,9 @@
 services:
   app:
     container_name: my_app_fastapi
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - '8000:8000'
     environment:
@@ -11,6 +13,9 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      tests:
+        condition: service_healthy
+    command: /bin/bash -c "while [ ! -f /temp/tests_exe]; do sleep 1; done && python -m app.main"
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:8000/']
       interval: 30s
@@ -20,6 +25,7 @@ services:
     volumes:
       - .:/app
       - app_venv:/app/.venv
+      - tests_exe:/temp
     networks:
       - backend-network
     restart: unless-stopped
@@ -60,10 +66,30 @@ services:
       - backend-network
     restart: unless-stopped
 
+  tests:
+    container_name: my_app_tests
+    build:
+      context: .
+      dockerfile: tests/Dockerfile
+    command: /bin/bash -c "tests/run_test.sh"
+    ports:
+      - '8001:8001'
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+      - app_venv:/app/.venv
+      - tests_exe:/temp
+    networks:
+      - backend-network
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:
   app_venv:
+  tests_exe:
 
 networks:
   backend-network:
