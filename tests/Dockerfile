@@ -17,5 +17,8 @@ RUN uv sync
 # Copy the project files
 COPY . .
 
+# Add rights to execute scripts
+RUN chmod +x tests/run_test.sh
+
 # Run the tests
 CMD ["pytest"]
