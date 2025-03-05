@@ -1,0 +1,94 @@
+services:
+  app:
+    container_name: my_app_fastapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/mydb
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      tests:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - app_venv:/app/.venv
+      - tests_exe:/temp
+    networks:
+      - backend-network
+    restart: unless-stopped
+
+  db:
+    container_name: my_app_postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydb
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend-network
+    restart: unless-stopped
+
+  redis:
+    container_name: my_app_redis
+    image: redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - backend-network
+    restart: unless-stopped
+
+  tests:
+    container_name: my_app_tests
+    build:
+      context: .
+      dockerfile: tests/Dockerfile
+    ports:
+      - '8001:8001'
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+      - app_venv:/app/.venv
+      - tests_exe:/temp
+    healthcheck:
+      test: ['CMD', 'test', '-f', '/temp/healthy']
+      interval: 2s
+      retries: 3
+      start_period: 2s
+      timeout: 5s
+    networks:
+      - backend-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  app_venv:
+  tests_exe:
+
+networks:
+  backend-network:
+    driver: bridge

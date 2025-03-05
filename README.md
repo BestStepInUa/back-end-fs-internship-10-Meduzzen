@@ -2,7 +2,7 @@
 
 1. To create a Virtual Environment use: uv venv
 
-2. To activate the Virtual Environment use: source .venv/Scripts/activate
+2. To activate the Virtual Environment use: source .venv/bin/activate
 
 3. If you want to take part in my project like new contibutor, you should install dev libraries, use: uv sync
 
