@@ -18,7 +18,10 @@ RUN uv sync
 COPY . .
 
 # Add rights to execute scripts
-RUN chmod +x tests/run_test.sh
+COPY tests/run_tests.sh /run_tests.sh
+RUN chmod +x /run_tests.sh
+
+ENV PYTHONUNBUFFERED=1
 
 # Run the tests
-CMD ["pytest"]
+ENTRYPOINT ["/run_tests.sh"]
