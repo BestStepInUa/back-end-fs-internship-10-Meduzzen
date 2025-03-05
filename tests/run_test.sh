@@ -1,8 +1,11 @@
 #!/bin/bash
+set -e
 
-rm /temp/tests_exe
+# Видаляємо файл тільки якщо він існує
+[ -f "/temp/tests_exe" ] && rm /temp/tests_exe || true
 
-pytest --maxfail=1 --disable-warnings
+# Запуск тестів через Python модуль
+python -m pytest --maxfail=1 --disable-warnings tests/
 
 if [ $? -eq 0 ]; then
   touch /temp/tests_exe
